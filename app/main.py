@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 import pandas as pd
+import geopandas as gpd
+import requests
 import json
 import plotly
 import plotly.express as px
@@ -13,15 +15,23 @@ def home_page():
 
 @app.route('/circuits')
 def circuits():
-   df = pd.DataFrame({
-      'Fruit': ['Apples', 'Oranges', 'Bananas', 'Apples', 'Oranges', 'Bananas'],
-      'Amount': [4, 1, 2, 2, 4, 5],
-      'City': ['SF', 'SF', 'SF', 'Montreal', 'Montreal', 'Montreal']
-   })
+   response = requests.get("http://ergast.com/api/f1/circuits.json?limit=100").json()
 
-   fig = px.bar(df, x='Fruit', y='Amount', color='City',
-                 barmode='group')
+   # get down to correct level of dictionary
+   response_clean = response["MRData"]["CircuitTable"]["Circuits"]
+
+   # convert to dataframe
+   df = pd.json_normalize(response_clean)
+
+   # convert dataframe into geo dataframe
+   geo_df = gpd.GeoDataFrame(
+      df, geometry=gpd.points_from_xy(df['Location.long'], df['Location.lat']))
+
+   fig = px.scatter_geo(geo_df,
+                        lat=geo_df.geometry.y,
+                        lon=geo_df.geometry.x,
+                        hover_name="circuitName")
 
    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-   return render_template('visual.html', graphJSON=graphJSON)
+   return render_template('circuits.html', graphJSON=graphJSON)

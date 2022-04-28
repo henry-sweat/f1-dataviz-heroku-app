@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>First Python Flask app with plotly dataviz</title>
+    <title>Home Page for my Formula 1 Data Visualizations</title>
     <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Plotly Visualization</h1>
+    <h1>Formula 1 Data Visualizations</h1>
 
-    <div id='chart' class='chart'></div>
+    <h3>Please select below:</h3>
 
-    <script type='text/javascript'>
-        var graphs = {{graphJSON | safe}};
-        Plotly.newPlot('chart',graphs,{});
-    </script>
+    <ul>
+      <li href="circuits">Circuits</li>
+      <li></li>
+      <li></li>
+    </ul>
+
+
 </body>
 </html>
