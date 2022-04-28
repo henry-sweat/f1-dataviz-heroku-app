@@ -7,7 +7,12 @@ import plotly.express as px
 app = Flask(__name__)
 
 @app.route('/')
-def home():
+def home_page():
+
+   return render_template('index.html')
+
+@app.route('/circuits')
+def circuits():
    df = pd.DataFrame({
       'Fruit': ['Apples', 'Oranges', 'Bananas', 'Apples', 'Oranges', 'Bananas'],
       'Amount': [4, 1, 2, 2, 4, 5],
@@ -19,4 +24,4 @@ def home():
 
    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-   return render_template('index.html', graphJSON=graphJSON)
+   return render_template('visual.html', graphJSON=graphJSON)
