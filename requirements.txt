@@ -2,3 +2,5 @@ gunicorn
 flask
 pandas
 plotly
+geopandas
+requests
